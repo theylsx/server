@@ -13,12 +13,17 @@ public class User {
     @Id
     private String openId;
     private int type;
+    private String name;
 
-    public User(String openId, int type){
-        this.openId = openId;
-        this.type = type;
-    }
     public User(){}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public String getOpenId() {
         return openId;

@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class PostController {
@@ -59,6 +56,7 @@ public class PostController {
         List<Post> postList = new ArrayList<>();
         Map<String, Object> result = new HashMap<>();
         postList = postTemplate.findAll();
+        Collections.reverse(postList);
         result.put("list", postList);
         return result;
     }

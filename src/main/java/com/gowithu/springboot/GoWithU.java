@@ -1,4 +1,4 @@
-package com.goWithU.springboot01;
+package com.gowithu.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author dav1d
  */
 @SpringBootApplication
-public class Springboot01Application {
+public class GoWithU {
 
     public static void main(String[] args) {
-        SpringApplication.run(Springboot01Application.class, args);
+        SpringApplication.run(GoWithU.class, args);
     }
 
 }

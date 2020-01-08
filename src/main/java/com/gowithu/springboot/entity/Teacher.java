@@ -1,32 +1,38 @@
-package com.goWithU.springboot01.Entity;
+package com.gowithu.springboot.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** @author dav1d */
-@Entity(name = "teacher")
+@Document (collection = "teacher")
 public class Teacher {
-  @Id private String openId;
-  private String asTeacher;
+  private ObjectId id;
+  private String openId;
+  private List<String> asTeacher;
   private String asHeadTeacher;
   private String name;
   private String email;
   private String place;
-  private String Information;
+  private String information;
   private int access;
 
-  public Teacher() {}
+  public Teacher() {
+    asTeacher = new ArrayList<>();
+  }
 
   public String getAsHeadTeacher() {
     return asHeadTeacher;
   }
 
   public String getInformation() {
-    return Information;
+    return information;
   }
 
-  public void setInformation(String infromation) {
-    Information = infromation;
+  public void setInformation(String information) {
+    this.information = information;
   }
 
   public int getAccess() {
@@ -61,9 +67,6 @@ public class Teacher {
     this.access = access;
   }
 
-  public String getAsTeacher() {
-    return asTeacher;
-  }
 
   public String getOpenId() {
     return openId;
@@ -73,11 +76,25 @@ public class Teacher {
     this.asHeadTeacher = asHeadTeacher;
   }
 
-  public void setAsTeacher(String asTeacher) {
-    this.asTeacher = asTeacher;
-  }
 
   public void setOpenId(String openId) {
     this.openId = openId;
   }
+
+  public void setId(ObjectId id) {
+    this.id = id;
+  }
+
+  public ObjectId getId() {
+    return id;
+  }
+
+  public void setAsTeacher(List<String> asTeacher) {
+    this.asTeacher = asTeacher;
+  }
+
+  public List<String> getAsTeacher() {
+    return asTeacher;
+  }
 }
+

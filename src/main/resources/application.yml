@@ -3,12 +3,12 @@ spring:
     active: a
   data:
     mongodb:
-      uri: mongodb://localhost:27017/gowithu
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://127.0.0.1:3306/gowithu?useUnicode=true&characterEncoding=utf-8&useSSL=false
-#    username: root
-#    password: Superzhouqi/15
+      host: localhost
+      port: 27017
+      username: root
+      password: Superzhouqi/15
+      database: gowithu
+      authentication-database: gowithu
   thymeleaf:
     cache: false
     prefix: classpath:/templates/

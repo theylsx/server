@@ -29,6 +29,7 @@ public class PostTemplate {
     }
 
     public List<Post> findAll() {
+        System.out.println(mongoTemplate.findAll(Post.class).size());
         return mongoTemplate.findAll(Post.class);
     }
 

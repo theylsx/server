@@ -1,8 +1,10 @@
 package com.gowithu.springboot.controller;
 
+import com.gowithu.springboot.dao.ChatRecordTemplate;
 import com.gowithu.springboot.dao.StudentTemplate;
 import com.gowithu.springboot.dao.TeacherTemplate;
 import com.gowithu.springboot.dao.UserTemplate;
+import com.gowithu.springboot.entity.ChatRecord;
 import com.gowithu.springboot.entity.Student;
 import com.gowithu.springboot.entity.Teacher;
 import com.gowithu.springboot.entity.User;
@@ -12,15 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class TeacherController {
   @Autowired private UserTemplate userTemplate;
   @Autowired private TeacherTemplate teacherTemplate;
   @Autowired private StudentTemplate studentTemplete;
+  @Autowired private ChatRecordTemplate chatRecordTemplate;
 
   @ResponseBody
   @PostMapping("/newTeacher")
@@ -73,6 +74,30 @@ public class TeacherController {
       student = studentTemplete.findByOpenId(id);
       studentList.add(student);
     }
+    return studentList;
+  }
+
+
+
+  @ResponseBody
+  @PostMapping("/getMyTalkStudent")
+  public Set<Student> getMyTalkStudent(@RequestBody Map<String, Object>data){
+    Set<Student> studentList = new HashSet<>();
+    Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
+    Student student;
+    ChatRecord chatRecord;
+
+    for (String id: teacher.getAsTeacher()){
+      System.out.println(id);
+      chatRecord = chatRecordTemplate.findByStudentOpenId(id);
+      if(chatRecord != null){
+        student = studentTemplete.findByOpenId(id);
+        System.out.println(student.getName() + " " + student.getOpenId());
+        studentList.add(student);
+      }
+
+    }
+    System.out.println(studentList.size());
     return studentList;
   }
 

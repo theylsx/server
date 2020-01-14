@@ -36,10 +36,6 @@ public class UserController {
   @ResponseBody
   @PostMapping("/pushAppointment")
   public String pushAppointment(@RequestBody Map<String, Object> data) throws ParseException {
-    // teacherOpenId: that.data.teacherOpenId,
-    // teacherName: that.data.teacherName,
-    // className: that.data.className,
-    // time: that.data.time
     String teacherOpenId = data.get("teacherOpenId").toString();
     String studentId = data.get("studentId").toString();
     String className = data.get("className").toString();
@@ -146,7 +142,7 @@ public class UserController {
     try {
       System.out.println(dir.getAbsolutePath().replace("\\", "\\\\"));
       Process process = Runtime.getRuntime()
-          .exec("python " + dir.getAbsolutePath() + "/python/getOpenid.py" + " " + code);
+          .exec("python3 " + dir.getAbsolutePath() + "/python/getOpenid.py" + " " + code);
       process.waitFor();
       BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
       BufferedReader in1 = new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"));
@@ -174,7 +170,6 @@ public class UserController {
   @PostMapping("/goWithU")
   public User judgeNewUser(@RequestBody Map<String, Object> data) {
     System.out.println(data.get("openId"));
-    // System.out.println(userTemplate.findByOpenId(data.get("openId").toString()).getId());
     return userTemplate.findByOpenId(data.get("openId").toString());
   }
 }

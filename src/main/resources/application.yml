@@ -5,10 +5,10 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      username: root
-      password: Superzhouqi/15
+#      username: root
+#      password: Superzhouqi/15
       database: gowithu
-      authentication-database: gowithu
+#      authentication-database: gowithu
   thymeleaf:
     cache: false
     prefix: classpath:/templates/

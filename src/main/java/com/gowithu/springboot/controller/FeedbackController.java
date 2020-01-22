@@ -4,7 +4,6 @@ import com.gowithu.springboot.dao.FeedbackTemplate;
 import com.gowithu.springboot.dao.StudentTemplate;
 import com.gowithu.springboot.entity.Feedback;
 import com.gowithu.springboot.entity.Student;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,9 +54,6 @@ public class FeedbackController {
   @ResponseBody
   @PostMapping("/saveFeedback")
   public String saveFeedback(@RequestBody Map<String, Object> data) {
-//    System.out.println(data.get("id").toString());
-//    ObjectId id = (ObjectId) data.get("id");
-//    String studentOpenId = data.get("studentOpenId").toString();
     String stringId = data.get("stringId").toString();
     System.out.println(stringId);
     String studentName = data.get("studentName").toString();
@@ -76,8 +72,6 @@ public class FeedbackController {
     String gains = data.get("gains").toString();
     String recommend = data.get("recommend").toString();
     Feedback feedback = feedbackTemplate.findByStringId(stringId);
-    //    feedback.setStudentOpenId(studentOpenId);
-    //      feedback.setId(id);
     feedback.setStudentName(studentName);
     feedback.setHeadTeacher(headTeacher);
     feedback.setDate(date);

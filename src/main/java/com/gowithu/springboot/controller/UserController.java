@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author dav1d
+ */
 @Controller
 public class UserController {
   String appId = "wx882769e007a9573e";
@@ -17,6 +20,8 @@ public class UserController {
 
   @Autowired
   private UserTemplate userTemplate;
+
+
 
   @ResponseBody
   @PostMapping("/getOpenId")
@@ -28,7 +33,7 @@ public class UserController {
     try {
       System.out.println(dir.getAbsolutePath().replace("\\", "\\\\"));
       Process process = Runtime.getRuntime()
-          .exec("python " + dir.getAbsolutePath() + "/python/getOpenid.py" + " " + code);
+          .exec("python3 " + dir.getAbsolutePath() + "/python/getOpenid.py" + " " + code);
       process.waitFor();
       BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
       BufferedReader in1 = new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"));

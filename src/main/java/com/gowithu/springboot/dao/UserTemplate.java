@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author david
+ */
 @Component
 public class UserTemplate {
     @Autowired

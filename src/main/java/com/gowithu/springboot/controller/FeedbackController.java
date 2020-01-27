@@ -4,6 +4,7 @@ import com.gowithu.springboot.dao.FeedbackTemplate;
 import com.gowithu.springboot.dao.StudentTemplate;
 import com.gowithu.springboot.entity.Feedback;
 import com.gowithu.springboot.entity.Student;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,7 @@ public class FeedbackController {
   @ResponseBody
   @PostMapping("/getFeedback")
   public Feedback getFeedback(@RequestBody Map<String, Object> data) {
-      String stringId = data.get("stringId").toString();
-    return feedbackTemplate.findByStringId(stringId);
+    return feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
   }
 
   @ResponseBody
@@ -45,17 +45,12 @@ public class FeedbackController {
     feedback.setStudentOpenId(studentOpenId);
     feedback.setTitle(title);
     feedbackTemplate.save(feedback);
-    feedback = feedbackTemplate.findByTitle(title);
-    feedback.setStringId(feedback.getId().toString());
-    feedbackTemplate.save(feedback);
     return "success";
   }
 
   @ResponseBody
   @PostMapping("/saveFeedback")
   public String saveFeedback(@RequestBody Map<String, Object> data) {
-    String stringId = data.get("stringId").toString();
-    System.out.println(stringId);
     String studentName = data.get("studentName").toString();
     String headTeacher = data.get("headTeacher").toString();
     String date = data.get("date").toString();
@@ -71,7 +66,7 @@ public class FeedbackController {
     Integer attitude = Integer.valueOf(data.get("attitude").toString());
     String gains = data.get("gains").toString();
     String recommend = data.get("recommend").toString();
-    Feedback feedback = feedbackTemplate.findByStringId(stringId);
+    Feedback feedback = feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
     feedback.setStudentName(studentName);
     feedback.setHeadTeacher(headTeacher);
     feedback.setDate(date);
@@ -88,7 +83,6 @@ public class FeedbackController {
     feedback.setAttitude(attitude);
     feedback.setRecommend(recommend);
     feedbackTemplate.save(feedback);
-
     return "success";
   }
 }

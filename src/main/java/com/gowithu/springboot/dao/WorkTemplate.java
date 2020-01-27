@@ -1,6 +1,7 @@
 package com.gowithu.springboot.dao;
 
 import com.gowithu.springboot.entity.Work;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -27,7 +28,11 @@ public class WorkTemplate {
         return mongoTemplate.find(query, Work.class);
     }
 
-//    public Work findOneWorkBy
+    public Work findById(ObjectId id){
+        Query query = Query.query(Criteria.where("_id").is(id));
+        return mongoTemplate.findOne(query, Work.class);
+    }
+
 
     public void save(Work work){
         mongoTemplate.save(work);

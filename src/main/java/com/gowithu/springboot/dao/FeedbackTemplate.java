@@ -37,8 +37,4 @@ public class FeedbackTemplate {
     }
 
 
-    public Feedback findByStringId(String stringId) {
-        Query query = new Query(Criteria.where("stringId").is(stringId));
-        return mongoTemplate.findOne(query, Feedback.class);
-    }
 }

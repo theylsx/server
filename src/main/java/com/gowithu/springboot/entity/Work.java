@@ -17,9 +17,18 @@ public class Work {
     private String teacherOpenId;
     private String studentOpenId;
     private String filePath;
+    private int count;
     private List<String> title;
     private List<String[]> selection;
     private List<String> answer;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public ObjectId getId() {
         return id;

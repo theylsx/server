@@ -6,9 +6,9 @@ spring:
       host: localhost
       port: 27017
       database: gowithu
-#      username: root
-#      password: Superzhouqi/15
-#      authentication-database: gowithu
+      username: root
+      password: Superzhouqi/15
+      authentication-database: gowithu
   thymeleaf:
     cache: false
     prefix: classpath:/templates/

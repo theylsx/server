@@ -2,6 +2,7 @@ package com.gowithu.springboot.controller;
 
 import com.gowithu.springboot.dao.WorkTemplate;
 import com.gowithu.springboot.entity.Work;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,11 +42,17 @@ public class WorkController {
         work.setWorkName(data.get("workName").toString());
         work.setTeacherOpenId(data.get("teacherOpenId").toString());
         work.setStudentOpenId(data.get("studentOpenId").toString());
+        work.setCount((Integer) data.get("count"));
         work.setSelection((List<String[]>) data.get("selection"));
         work.setTitle((List<String>) data.get("title"));
         workTemplate.save(work);
         return "success";
+    }
 
+    @ResponseBody
+    @PostMapping("/getWork")
+    public Work getWork(@RequestBody Map<String, Object> data){
+        return workTemplate.findById(new ObjectId(data.get("id").toString()));
     }
 
 }

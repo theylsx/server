@@ -21,6 +21,15 @@ public class Work {
     private List<String> title;
     private List<String[]> selection;
     private List<String> answer;
+    private float score;
+
+    public float getScore(){
+        return score;
+    }
+
+    public void setScore(float s){
+        this.score = s;
+    }
 
     public int getCount() {
         return count;

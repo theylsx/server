@@ -21,4 +21,10 @@ public class TeacherTemplate {
        mongoTemplate.save(teacher);
     }
 
+    public Teacher findByNameAndOrganization(String name, String place){
+        Query query = new Query(Criteria.where("name").is(name).and("place").is(place));
+        Teacher teacher = mongoTemplate.findOne(query, Teacher.class);
+        return teacher;
+    }
+
 }

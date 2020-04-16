@@ -18,10 +18,14 @@ import java.util.*;
 
 @Controller
 public class TeacherController {
-  @Autowired private UserTemplate userTemplate;
-  @Autowired private TeacherTemplate teacherTemplate;
-  @Autowired private StudentTemplate studentTemplete;
-  @Autowired private ChatRecordTemplate chatRecordTemplate;
+  @Autowired
+  private UserTemplate userTemplate;
+  @Autowired
+  private TeacherTemplate teacherTemplate;
+  @Autowired
+  private StudentTemplate studentTemplete;
+  @Autowired
+  private ChatRecordTemplate chatRecordTemplate;
 
   @ResponseBody
   @PostMapping("/newTeacher")
@@ -46,9 +50,8 @@ public class TeacherController {
   @PostMapping("/addMyStudent")
   public String addMyStudent(@RequestBody Map<String, Object> data) {
     System.out.println(data.get("Name").toString() + data.get("Hospital").toString());
-    Student student =
-        studentTemplete.findByNameAndHospital(
-            data.get("Name").toString(), data.get("Hospital").toString());
+    Student student = studentTemplete.findByNameAndHospital(data.get("Name").toString(),
+        data.get("Hospital").toString());
     if (student == null) {
       return "fail";
     }
@@ -66,31 +69,29 @@ public class TeacherController {
 
   @ResponseBody
   @PostMapping("/getMyStudent")
-  public List<Student> getMyStudent(@RequestBody Map<String, Object>data){
+  public List<Student> getMyStudent(@RequestBody Map<String, Object> data) {
     List<Student> studentList = new ArrayList<>();
     Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
     Student student;
-    for (String id: teacher.getAsTeacher()){
+    for (String id : teacher.getAsTeacher()) {
       student = studentTemplete.findByOpenId(id);
       studentList.add(student);
     }
     return studentList;
   }
 
-
-
   @ResponseBody
   @PostMapping("/getMyTalkStudent")
-  public Set<Student> getMyTalkStudent(@RequestBody Map<String, Object>data){
+  public Set<Student> getMyTalkStudent(@RequestBody Map<String, Object> data) {
     Set<Student> studentList = new HashSet<>();
     Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
     Student student;
     ChatRecord chatRecord;
 
-    for (String id: teacher.getAsTeacher()){
+    for (String id : teacher.getAsTeacher()) {
       System.out.println(id);
       chatRecord = chatRecordTemplate.findByStudentOpenId(id);
-      if(chatRecord != null){
+      if (chatRecord != null) {
         student = studentTemplete.findByOpenId(id);
         System.out.println(student.getName() + " " + student.getOpenId());
         studentList.add(student);
@@ -106,5 +107,11 @@ public class TeacherController {
   public Teacher getTeacher(@RequestBody Map<String, Object> data) {
     String openid = data.get("openId").toString();
     return teacherTemplate.findByOpenId(openid);
+  }
+
+  @ResponseBody
+  @PostMapping("/login")
+  public Teacher login(@RequestBody Map<String, Object> data) {
+    return teacherTemplate.findByNameAndOrganization(data.get("name").toString(), data.get("place").toString());
   }
 }

@@ -1,18 +1,19 @@
 package com.gowithu.springboot.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import com.gowithu.springboot.dao.AnswerTemplate;
 import com.gowithu.springboot.dao.WorkTemplate;
 import com.gowithu.springboot.entity.Answer;
 import com.gowithu.springboot.entity.Work;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author david
@@ -45,7 +46,7 @@ public class WorkController {
         work.setWorkName(data.get("workName").toString());
         work.setTeacherOpenId(data.get("teacherOpenId").toString());
         work.setStudentOpenId(data.get("studentOpenId").toString());
-        work.setCount((Integer) data.get("count"));
+        work.setCount((Integer.parseInt(data.get("count").toString())));
         work.setSelection((List<String[]>) data.get("selection"));
         work.setTitle((List<String>) data.get("title"));
         work.setScore(0);
@@ -86,6 +87,5 @@ public class WorkController {
         return "Success";
     }
     
-
 
 }

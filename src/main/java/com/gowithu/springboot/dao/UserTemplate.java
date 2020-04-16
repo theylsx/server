@@ -23,4 +23,5 @@ public class UserTemplate {
     public void save(User user){
        mongoTemplate.save(user);
     }
+
 }

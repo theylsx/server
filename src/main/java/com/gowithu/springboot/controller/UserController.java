@@ -63,4 +63,6 @@ public class UserController {
     System.out.println(data.get("openId"));
     return userTemplate.findByOpenId(data.get("openId").toString());
   }
+
+ 
 }

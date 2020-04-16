@@ -27,7 +27,7 @@ public class PostController {
         post.setTitle(data.get("Title").toString());
         post.setDate(data.get("Date").toString());
         post.setPublisherId(data.get("OpenId").toString());
-        post.setPublisherAvatar(data.get("UserAvatar").toString());
+//        post.setPublisherAvatar(data.get("UserAvatar").toString());
         postTemplate.save(post);
         post = postTemplate.findLatestByPublisherId(data.get("OpenId").toString());
         post.setStringId(post.getId().toString());
@@ -45,7 +45,7 @@ public class PostController {
         result.put("Date", post.getDate());
         User user;
         user = userTemplate.findByOpenId(post.getPublisherId());
-        result.put("Avatar", post.getPublisherAvatar());
+//        result.put("Avatar", post.getPublisherAvatar());
         result.put("PublisherName", user.getName());
         return result;
     }

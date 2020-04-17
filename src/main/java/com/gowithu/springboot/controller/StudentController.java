@@ -19,8 +19,8 @@ import java.util.Map;
 /** @author dav1d */
 @Controller
 public class StudentController {
-  private final StudentTemplate studentTemplate;
-  private final UserTemplate userTemplate;
+  private final com.gowithu.springboot.dao.StudentTemplate studentTemplate;
+  private final com.gowithu.springboot.dao.UserTemplate userTemplate;
   @Autowired private TeacherTemplate teacherTemplate;
 
   public StudentController(StudentTemplate studentTemplate, UserTemplate userTemplate) {

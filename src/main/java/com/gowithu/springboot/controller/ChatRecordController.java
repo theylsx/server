@@ -13,7 +13,8 @@ import java.util.Map;
 
 @Controller
 public class ChatRecordController {
-    @Autowired private ChatRecordTemplate chatRecordTemplate;
+    @Autowired
+    private ChatRecordTemplate chatRecordTemplate;
 
     @ResponseBody
     @PostMapping("/getChatRecord")

@@ -17,73 +17,88 @@ import java.util.Map;
 
 @Controller
 public class FeedbackController {
-  @Autowired private FeedbackTemplate feedbackTemplate;
-  @Autowired private StudentTemplate studentTemplate;
+    @Autowired
+    private FeedbackTemplate feedbackTemplate;
+    @Autowired
+    private StudentTemplate studentTemplate;
 
-  @ResponseBody
-  @PostMapping("/getFeedback")
-  public Feedback getFeedback(@RequestBody Map<String, Object> data) {
-    return feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
-  }
+    /*
+     * 通过ObjectId 获取 学习反馈表
+     */
+    @ResponseBody
+    @PostMapping("/getFeedback")
+    public Feedback getFeedback(@RequestBody Map<String, Object> data) {
+        return feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
+    }
 
-  @ResponseBody
-  @PostMapping("/getFeedbackList")
-  public List<Feedback> getFeedbackList(@RequestBody Map<String, Object> data) {
-    String openId = data.get("openId").toString();
-    System.out.println(feedbackTemplate.findByStudentOpenId(openId).get(0).toString());
-    return feedbackTemplate.findByStudentOpenId(openId);
-  }
+    /**
+     * 通过学生的 openId获取该学生所有的学习反馈表
+     */
+    @ResponseBody
+    @PostMapping("/getFeedbackList")
+    public List<Feedback> getFeedbackList(@RequestBody Map<String, Object> data) {
+        String openId = data.get("openId").toString();
+        System.out.println(feedbackTemplate.findByStudentOpenId(openId).get(0).toString());
+        return feedbackTemplate.findByStudentOpenId(openId);
+    }
 
-  @ResponseBody
-  @PostMapping("/addFeedback")
-  public String addFeedback(@RequestBody Map<String, Object> data) {
-    String studentOpenId = data.get("studentOpenId").toString();
-    Feedback feedback = new Feedback();
-    Student student = studentTemplate.findByOpenId(studentOpenId);
-    String studentName = student.getName();
-    int times = feedbackTemplate.findByStudentOpenId(studentOpenId).size();
-    String title = studentName + " 第 " + String.valueOf(times + 1) + " 次课教学反馈表";
-    feedback.setStudentOpenId(studentOpenId);
-    feedback.setTitle(title);
-    feedbackTemplate.save(feedback);
-    return "success";
-  }
+    /**
+     * 新建一个空白的学习反馈表，并且命名为 谁 第 x 次课教学反馈表 先通过学生openid 获取学生姓名 再新建反馈表
+     */
+    @ResponseBody
+    @PostMapping("/addFeedback")
+    public String addFeedback(@RequestBody Map<String, Object> data) {
+        String studentOpenId = data.get("studentOpenId").toString();
+        Feedback feedback = new Feedback();
+        Student student = studentTemplate.findByOpenId(studentOpenId);
+        String studentName = student.getName();
+        int times = feedbackTemplate.findByStudentOpenId(studentOpenId).size();
+        String title = studentName + " 第 " + String.valueOf(times + 1) + " 次课教学反馈表";
+        feedback.setStudentOpenId(studentOpenId);
+        feedback.setTitle(title);
+        feedbackTemplate.save(feedback);
+        return "success";
+    }
 
-  @ResponseBody
-  @PostMapping("/saveFeedback")
-  public String saveFeedback(@RequestBody Map<String, Object> data) {
-    String studentName = data.get("studentName").toString();
-    String headTeacher = data.get("headTeacher").toString();
-    String date = data.get("date").toString();
-    String className = data.get("className").toString();
-    String teacher = data.get("teacher").toString();
-    String goal = data.get("goal").toString();
-    String classNum = data.get("classNum").toString();
-    String offlineNum = data.get("offlineNum").toString();
-    String onlineNum = data.get("onlineNum").toString();
-    Integer progress = Integer.valueOf(data.get("progress").toString());
-    Integer difficulty = Integer.valueOf(data.get("difficulty").toString());
-    Integer method = Integer.valueOf(data.get("method").toString());
-    Integer attitude = Integer.valueOf(data.get("attitude").toString());
-    String gains = data.get("gains").toString();
-    String recommend = data.get("recommend").toString();
-    Feedback feedback = feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
-    feedback.setStudentName(studentName);
-    feedback.setHeadTeacher(headTeacher);
-    feedback.setDate(date);
-    feedback.setClassName(className);
-    feedback.setTeacher(teacher);
-    feedback.setGoal(goal);
-    feedback.setGains(gains);
-    feedback.setClassNum(classNum);
-    feedback.setOfflineNum(offlineNum);
-    feedback.setOnlineNum(onlineNum);
-    feedback.setProgress(progress);
-    feedback.setDifficulty(difficulty);
-    feedback.setMethod(method);
-    feedback.setAttitude(attitude);
-    feedback.setRecommend(recommend);
-    feedbackTemplate.save(feedback);
-    return "success";
-  }
+    /**
+     * 
+     * 保存学习反馈表
+     */
+    @ResponseBody
+    @PostMapping("/saveFeedback")
+    public String saveFeedback(@RequestBody Map<String, Object> data) {
+        String studentName = data.get("studentName").toString();
+        String headTeacher = data.get("headTeacher").toString();
+        String date = data.get("date").toString();
+        String className = data.get("className").toString();
+        String teacher = data.get("teacher").toString();
+        String goal = data.get("goal").toString();
+        String classNum = data.get("classNum").toString();
+        String offlineNum = data.get("offlineNum").toString();
+        String onlineNum = data.get("onlineNum").toString();
+        Integer progress = Integer.valueOf(data.get("progress").toString());
+        Integer difficulty = Integer.valueOf(data.get("difficulty").toString());
+        Integer method = Integer.valueOf(data.get("method").toString());
+        Integer attitude = Integer.valueOf(data.get("attitude").toString());
+        String gains = data.get("gains").toString();
+        String recommend = data.get("recommend").toString();
+        Feedback feedback = feedbackTemplate.findById(new ObjectId(data.get("id").toString()));
+        feedback.setStudentName(studentName);
+        feedback.setHeadTeacher(headTeacher);
+        feedback.setDate(date);
+        feedback.setClassName(className);
+        feedback.setTeacher(teacher);
+        feedback.setGoal(goal);
+        feedback.setGains(gains);
+        feedback.setClassNum(classNum);
+        feedback.setOfflineNum(offlineNum);
+        feedback.setOnlineNum(onlineNum);
+        feedback.setProgress(progress);
+        feedback.setDifficulty(difficulty);
+        feedback.setMethod(method);
+        feedback.setAttitude(attitude);
+        feedback.setRecommend(recommend);
+        feedbackTemplate.save(feedback);
+        return "success";
+    }
 }

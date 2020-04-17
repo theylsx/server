@@ -18,100 +18,134 @@ import java.util.*;
 
 @Controller
 public class TeacherController {
-  @Autowired
-  private UserTemplate userTemplate;
-  @Autowired
-  private TeacherTemplate teacherTemplate;
-  @Autowired
-  private StudentTemplate studentTemplete;
-  @Autowired
-  private ChatRecordTemplate chatRecordTemplate;
+    @Autowired
+    private UserTemplate userTemplate;
+    @Autowired
+    private TeacherTemplate teacherTemplate;
+    @Autowired
+    private StudentTemplate studentTemplete;
+    @Autowired
+    private ChatRecordTemplate chatRecordTemplate;
 
-  @ResponseBody
-  @PostMapping("/newTeacher")
-  public String newTeacher(@RequestBody Map<String, Object> data) {
-    System.out.println(data.get("OpenId").toString());
-    Teacher teacher = new Teacher();
-    teacher.setOpenId(data.get("OpenId").toString());
-    teacher.setName(data.get("Name").toString());
-    teacher.setInformation(data.get("Information").toString());
-    teacher.setPlace(data.get("Place").toString());
-    teacher.setEmail(data.get("Email").toString());
-    User user = new User();
-    user.setName(data.get("Name").toString());
-    user.setOpenId(data.get("OpenId").toString());
-    user.setType(1);
-    teacherTemplate.save(teacher);
-    userTemplate.save(user);
-    return "Success";
-  }
-
-  @ResponseBody
-  @PostMapping("/addMyStudent")
-  public String addMyStudent(@RequestBody Map<String, Object> data) {
-    System.out.println(data.get("Name").toString() + data.get("Hospital").toString());
-    Student student = studentTemplete.findByNameAndHospital(data.get("Name").toString(),
-        data.get("Hospital").toString());
-    if (student == null) {
-      return "fail";
+    /**
+     * 保存一个新的老师信息（注册） 同时要保存到用户表
+     * 
+     * @param data
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/newTeacher")
+    public String newTeacher(@RequestBody Map<String, Object> data) {
+        System.out.println(data.get("OpenId").toString());
+        Teacher teacher = new Teacher();
+        teacher.setOpenId(data.get("OpenId").toString());
+        teacher.setName(data.get("Name").toString());
+        teacher.setInformation(data.get("Information").toString());
+        teacher.setPlace(data.get("Place").toString());
+        teacher.setEmail(data.get("Email").toString());
+        User user = new User();
+        user.setName(data.get("Name").toString());
+        user.setOpenId(data.get("OpenId").toString());
+        user.setType(1);
+        teacherTemplate.save(teacher);
+        userTemplate.save(user);
+        return "Success";
     }
-    String myOpenId = data.get("MyOpenId").toString();
-    Teacher teacher = teacherTemplate.findByOpenId(myOpenId);
-    if (student.getTeacher().contains(myOpenId)) {
-      return "exist";
+
+    /**
+     * 给某一位老师添加一个学生，需要 学生的姓名Name以及所属医院Hospital 先查找是否存在该学生，如果不存在就返回fail
+     * 老师的一个属性保存着所有她的学生的openid 如果已经添加过该学生返回‘exist’ 如果存在并且没添加过，则添加学生openid
+     * 到老师的学生列表属性中（list.add） 并且需要将该老师的openid 加到学生的老师openid列表中（list.add）
+     * 
+     * @param data
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/addMyStudent")
+    public String addMyStudent(@RequestBody Map<String, Object> data) {
+        Student student = studentTemplete.findByNameAndHospital(data.get("Name").toString(),
+                data.get("Hospital").toString());
+        if (student == null) {
+            return "fail";
+        }
+        String myOpenId = data.get("MyOpenId").toString();
+        Teacher teacher = teacherTemplate.findByOpenId(myOpenId);
+        if (student.getTeacher().contains(myOpenId)) {
+            return "exist";
+        }
+        teacher.getAsTeacher().add(student.getOpenId());
+        student.getTeacher().add(myOpenId);
+        studentTemplete.save(student);
+        teacherTemplate.save(teacher);
+        return "addMyStudent";
     }
-    teacher.getAsTeacher().add(student.getOpenId());
-    student.getTeacher().add(myOpenId);
-    studentTemplete.save(student);
-    teacherTemplate.save(teacher);
-    return "addMyStudent";
-  }
 
-  @ResponseBody
-  @PostMapping("/getMyStudent")
-  public List<Student> getMyStudent(@RequestBody Map<String, Object> data) {
-    List<Student> studentList = new ArrayList<>();
-    Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
-    Student student;
-    for (String id : teacher.getAsTeacher()) {
-      student = studentTemplete.findByOpenId(id);
-      studentList.add(student);
+    /**
+     * 获取该老师的所有学生的列表
+     * 
+     * @param data
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/getMyStudent")
+    public List<Student> getMyStudent(@RequestBody Map<String, Object> data) {
+        List<Student> studentList = new ArrayList<>();
+        Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
+        Student student;
+        for (String id : teacher.getAsTeacher()) {
+            student = studentTemplete.findByOpenId(id);
+            studentList.add(student);
+        }
+        return studentList;
     }
-    return studentList;
-  }
 
-  @ResponseBody
-  @PostMapping("/getMyTalkStudent")
-  public Set<Student> getMyTalkStudent(@RequestBody Map<String, Object> data) {
-    Set<Student> studentList = new HashSet<>();
-    Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
-    Student student;
-    ChatRecord chatRecord;
+    /**
+     * 这个暂时先不管
+     */
+    @ResponseBody
+    @PostMapping("/getMyTalkStudent")
+    public Set<Student> getMyTalkStudent(@RequestBody Map<String, Object> data) {
+        Set<Student> studentList = new HashSet<>();
+        Teacher teacher = teacherTemplate.findByOpenId(data.get("OpenId").toString());
+        Student student;
+        ChatRecord chatRecord;
 
-    for (String id : teacher.getAsTeacher()) {
-      System.out.println(id);
-      chatRecord = chatRecordTemplate.findByStudentOpenId(id);
-      if (chatRecord != null) {
-        student = studentTemplete.findByOpenId(id);
-        System.out.println(student.getName() + " " + student.getOpenId());
-        studentList.add(student);
-      }
+        for (String id : teacher.getAsTeacher()) {
+            System.out.println(id);
+            chatRecord = chatRecordTemplate.findByStudentOpenId(id);
+            if (chatRecord != null) {
+                student = studentTemplete.findByOpenId(id);
+                System.out.println(student.getName() + " " + student.getOpenId());
+                studentList.add(student);
+            }
 
+        }
+        System.out.println(studentList.size());
+        return studentList;
     }
-    System.out.println(studentList.size());
-    return studentList;
-  }
 
-  @ResponseBody
-  @PostMapping("/getTeacher")
-  public Teacher getTeacher(@RequestBody Map<String, Object> data) {
-    String openid = data.get("openId").toString();
-    return teacherTemplate.findByOpenId(openid);
-  }
+    /**
+     * 通过老师的openId 获取老师的所有信息
+     * 
+     * @param data
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/getTeacher")
+    public Teacher getTeacher(@RequestBody Map<String, Object> data) {
+        String openid = data.get("openId").toString();
+        return teacherTemplate.findByOpenId(openid);
+    }
 
-  @ResponseBody
-  @PostMapping("/login")
-  public Teacher login(@RequestBody Map<String, Object> data) {
-    return teacherTemplate.findByNameAndOrganization(data.get("name").toString(), data.get("place").toString());
-  }
+    /**
+     * 网站登录 输入姓名 以及 所属 place 返回所有信息 如果没有返回null
+     * 
+     * @param data
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/login")
+    public Teacher login(@RequestBody Map<String, Object> data) {
+        return teacherTemplate.findByNameAndOrganization(data.get("name").toString(), data.get("place").toString());
+    }
 }

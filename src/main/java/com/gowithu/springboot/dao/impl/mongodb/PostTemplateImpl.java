@@ -1,6 +1,8 @@
 package com.gowithu.springboot.dao.impl.mongodb;
 
 import com.gowithu.springboot.entity.Post;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,14 +22,8 @@ public class PostTemplateImpl implements com.gowithu.springboot.dao.PostTemplate
     }
 
     @Override
-    public Post findById(Integer id) {
+    public Post findById(ObjectId id) {
         Query query = new Query(Criteria.where("id").is(id));
-        return mongoTemplate.findOne(query, Post.class);
-    }
-
-    @Override
-    public Post findByStringId(String stringId){
-        Query query = new Query(Criteria.where("stringId").is(stringId));
         return mongoTemplate.findOne(query, Post.class);
     }
 

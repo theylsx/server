@@ -10,17 +10,18 @@ public class Post {
   private String title;
   private String content;
   private String publisherId;
+  private String publisherName;
   private String date;
   private String publisherAvatar;
-  private String stringId;
 
-  public void setStringId(String stringId) {
-    this.stringId = stringId;
-  }
 
-  public String getStringId() {
-    return stringId;
-  }
+public void setPublisherName(String name){
+    this.publisherName = name;
+}
+
+    public String getPublisherName(){
+        return this.publisherName;
+    }
 
   public void setDate(String date) {
     this.date = date;

@@ -3,7 +3,7 @@ spring:
     active: a
   data:
     mongodb:
-      host: localhost
+      host: 47.100.39.201
       port: 27017
       database: gowithu
       username: root

@@ -48,4 +48,11 @@ public class WorkTemplate {
         mongoTemplate.save(work);
     }
 
+    public void uploadWorkPictureFilePath(String filePath, ObjectId id) {
+        Work work = findById(id);
+        List<String> pl = work.getPictureList();
+        pl.add(filePath);
+        work.setPictureList(pl);
+    }
+
 }

@@ -19,6 +19,7 @@ public class Work {
   private String filePath;
   private int count;
   private List<String> title;
+  private List<String> pictureList;
   private List<String[]> selection;
   private List<String> answer;
   private float score;
@@ -27,6 +28,14 @@ public class Work {
 
   public String getContext() {
     return context;
+  }
+
+  public List<String> getPictureList() {
+    return pictureList;
+  }
+
+  public void setPictureList(List<String> pl) {
+    pictureList = pl;
   }
 
   public int getType() {

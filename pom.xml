@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tuppy</groupId>
-    <artifactId>springboot01</artifactId>
+    <artifactId>ylsx</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot01</name>
+    <name>ylsx</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
